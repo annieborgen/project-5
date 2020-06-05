@@ -7,33 +7,33 @@ let controller = function() {
   //}
 
   $.ajax({
-    url: "http://localhost:8888/comments",
+    url: "http://localhost:8888/todos",
     method: "GET"
   }).done((res) => {
     let pElem;
     //console.log(res.comments[0]._id + " " + res.comments[0].data)
-    res.comments.forEach((comment) => {
-      pElem = $("<p>").html(comment.data)
+    res.todos.forEach((todo) => {
+      pElem = $("<p>").html(todo.data)
       $(".comments").append(pElem);
     })
   });
 
   let addCommentFromInputBox = function() {
     //Semmy uses "$" to name variables that will contain jQuery objects
-    let $new_comment, content;
+    let $new_todo, content;
 
     if ($(".comment-input input").val() !== "") {
       content = $(".comment-input input").val();
-      $new_comment = $("<p>").text(content);
-      //$new_comment.hide();
-      $(".comments").append($new_comment);
-      //$new_comment.fadeIn();
+      $new_todo = $("<p>").text(content);
+      //$new_todo.hide();
+      $(".comments").append($new_todo);
+      //$new_todo.fadeIn();
       $(".comment-input input").val("");
 
       //add comment to db
       $.ajax({
           method: "POST",
-          url: "http://localhost:8888/addcomment",
+          url: "http://localhost:8888/addtodo",
           data: {
             data: content
           }
@@ -45,6 +45,7 @@ let controller = function() {
   };
 
   $(".comment-input button").on("click", function(event) {
+    console.log($(".comment-input button").attr("id"));
     addCommentFromInputBox();
   });
 
@@ -63,7 +64,7 @@ let deleteComment = () => {
       url: "http://localhost:8888/deletecomment/" + content
     })
     .done(function(msg) {
-      console.log("Comment deleted: " + msg);
+      console.log("To do deleted: " + msg);
     });
 
   window.location.reload();
@@ -80,8 +81,8 @@ let getComment = () => {
       url: "http://localhost:8888/getcomment/" + content
     })
     .done(function(msg) {
-      console.log("Comment retrieved: " + msg.message.data);
-      pElem = $("<p>").html("Comment Retrieved: " + msg.message.data)
+      console.log("To do retrieved: " + msg.message.data);
+      pElem = $("<p>").html("To do Retrieved: " + msg.message.data)
       $("#outDiv").append(pElem);
     });
 
