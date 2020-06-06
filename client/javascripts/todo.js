@@ -91,7 +91,15 @@ let getComment = () => {
 
 let deleteAll = () => {
   //delete all comments from db
-  localStorage.removeItem("commentsList")
+  let content = $("#deleteAll").val();
+  $.ajax({
+      method: "POST",
+      url: "http://localhost:8888/deleteAll/" + content
+    })
+    .done(function(msg) {
+      console.log("All to dos deleted: " + msg);
+    });
+  localStorage.removeItem("toDoList")
   window.location.reload();
 }
 
